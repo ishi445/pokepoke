@@ -46,7 +46,10 @@ export interface PokemonSprites{
 }
 
 // - PokemonSpeciesDetail（種別詳細情報）
-
+export interface PokemonAbility {
+  ability: NamedApiResource; 
+  is_hidden: boolean;
+}
 
 // アプリ内で使用する処理済みポケモンデータ
 export interface ProcessedPokemon {
@@ -58,7 +61,7 @@ export interface ProcessedPokemon {
   height: number;
   weight: number;
   genus: string;
-  abilities: ProcessedAbility[];
+  abilities: PokemonAbility[];
 }
 
 // ページネーション情報
