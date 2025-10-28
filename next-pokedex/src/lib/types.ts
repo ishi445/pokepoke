@@ -40,9 +40,17 @@ export interface Pokemon{
 }
 
 // - PokemonSprites（画像情報）
-export interface PokemonSprites{
-  front_default:string | null;//正面画像
-  back_default?:string | null;//後ろ向き画像(あれば)
+export interface PokemonSprites {
+  front_default: string | null;
+  back_default?: string | null;
+  other?: {
+    home?: {
+      front_default?: string | null;
+    };
+    ["official-artwork"]?: {
+      front_default?: string | null;
+    };
+  };
 }
 
 // - PokemonSpeciesDetail（種別詳細情報）

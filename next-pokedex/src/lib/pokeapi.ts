@@ -59,6 +59,16 @@ return jp ? jp.name : names[0]?.name ?? "（不明）";
  */
 export function getPokemonImageUrl(sprites: Pokemon['sprites']): string {
   // 💡 課題: official-artwork → home → front_default の優先順位で画像URLを取得
+  // ① official-artwork の画像を最優先
+    const official =sprites.other?.["official-artwork"]?.front_default;
+      // ② なければ home の画像を使う
+    const home = sprites.other?.home?.front_default;
+
+  // ③ 最後の手段として通常の front_default を使う
+    const basic = sprites.front_default;
+
+  // 4️⃣ どれもなければ、代わりの画像を返す（または空文字でもOK）
+  return '/dummy-pokemon.png'; // ←画像パス
 }
 
 // タイプ名の日本語変換テーブル
