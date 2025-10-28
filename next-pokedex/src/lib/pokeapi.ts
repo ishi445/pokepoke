@@ -14,6 +14,10 @@ offset: number = 0
   // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
 }
 
+const responce = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
+const data = await responce .json();
+return data;
+
 /**
  * 個別のポケモン詳細情報を取得する
  */
@@ -37,11 +41,27 @@ export function getPokemonImageUrl(sprites: Pokemon['sprites']): string {
 }
 
 // タイプ名の日本語変換テーブル
+  // 💡 課題: 他のタイプも追加してください
 export const typeTranslations: Record<string, string> = {
 normal: 'ノーマル',
 fire: 'ほのお',
 water: 'みず',
-  // 💡 課題: 他のタイプも追加してください
+electric: 'でんき',
+electric: 'くさ',
+electric: 'こおり',
+electric: 'かくとう',
+electric: 'むし',
+electric: 'いわ',
+electric: 'ゴースト',
+electric: 'ドラゴン',
+electric: 'あく',
+electric: 'フェアリー',
+electric: 'エスパー',
+electric: '地面',
+electric: '飛行',
+electric: '鋼',
+electric: '毒',
+
 };
 
 /**
