@@ -1,4 +1,18 @@
 // src/lib/pokeapi.ts
+import { PokemonListResponse } from "./types";
+import type { Pokemon } from "./types";
+import type { Name } from "./types";
+
+async function fetchJson<T>(url: string): Promise<T> {
+const res = await fetch(url);
+if (!res.ok) {
+    // 開発中はエラーメッセージを残すとデバッグしやすい
+    throw new Error(`Fetch error ${res.status} ${res.statusText} for ${url}`);
+}
+const data = await res.json();
+return data as T;//TypeScript用
+}
+
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 const SAFE_POKEMON_LIMIT = 1010;
@@ -12,25 +26,32 @@ offset: number = 0
 ): Promise<PokemonListResponse> {
   // 💡 課題: fetch()を使ってAPIからデータを取得してください
   // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
-}
 
-const responce = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
-const data = await responce .json();
-return data;
+const url = `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`;
+return await fetchJson<PokemonListResponse>(url);
+}
 
 /**
  * 個別のポケモン詳細情報を取得する
  */
 export async function fetchPokemon(idOrName: string | number): Promise<Pokemon> {
+const url = `${BASE_URL}/pokemon/${idOrName}`;
+const data = await fetchJson<Pokemon>(url);
+return data;
+}
   // 💡 課題: ポケモンの詳細情報を取得してください
   // エンドポイント: `${BASE_URL}/pokemon/${idOrName}`
-}
 
 /**
  * 多言語名前配列から日本語名を取得する
  */
 export function getJapaneseName(names: Name[]): string {
   // 💡 課題: 'ja-Hrkt' または 'ja' の言語コードを持つ名前を探してください
+const jp = names.find(
+    (n) => n.language.name === "ja-Hrkt" || n.language.name === "ja"
+);
+  // 見つかったらその名前、なければ英語など
+return jp ? jp.name : names[0]?.name ?? "（不明）";
 }
 
 /**
@@ -42,27 +63,28 @@ export function getPokemonImageUrl(sprites: Pokemon['sprites']): string {
 
 // タイプ名の日本語変換テーブル
   // 💡 課題: 他のタイプも追加してください
+  //今回は手で追加したけど、fetchで取ってきてもよい
 export const typeTranslations: Record<string, string> = {
 normal: 'ノーマル',
 fire: 'ほのお',
 water: 'みず',
 electric: 'でんき',
-electric: 'くさ',
-electric: 'こおり',
-electric: 'かくとう',
-electric: 'むし',
-electric: 'いわ',
-electric: 'ゴースト',
-electric: 'ドラゴン',
-electric: 'あく',
-electric: 'フェアリー',
-electric: 'エスパー',
-electric: '地面',
-electric: '飛行',
-electric: '鋼',
-electric: '毒',
-
+grass: 'くさ',
+ice: 'こおり',
+fighting: 'かくとう',
+poison: 'どく',
+ground: 'じめん',
+flying: 'ひこう',
+psychic: 'エスパー',
+bug: 'むし',
+rock: 'いわ',
+ghost: 'ゴースト',
+dragon: 'ドラゴン',
+dark: 'あく',
+steel: 'はがね',
+fairy: 'フェアリー',
 };
+
 
 /**
  * ポケモン一覧を処理済みデータとして取得する
