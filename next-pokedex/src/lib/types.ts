@@ -26,15 +26,15 @@ export interface PokemonListResponse {
 export  interface Pokemon{
 id:number;//番号
 name:string;//名前
-types:string;//タイプ
+types:PokemonType;//タイプ
 sprites:PokemonSprites;//画像情報
 height:number;//高さ
 weight:number;//重さ
-abilities:string;//特性
+abilities:PokemonAbility;//特性
 }
 
 // - PokemonType（タイプ情報）
-export interface Pokemon{
+export interface PokemonType{
     slot:number; //タイプの順番
     type:NamedApiResource;//タイプの名前とURL
 }
@@ -65,7 +65,7 @@ export interface ProcessedPokemon {
   name: string;
   japaneseName: string;
   imageUrl: string;
-  types: string[];
+  types: PokemonType[];
   height: number;
   weight: number;
   genus: string;

@@ -2,6 +2,7 @@
 import { PokemonListResponse } from "./types";
 import type { Pokemon } from "./types";
 import type { Name } from "./types";
+import type{ PaginationInfo} from "./types";
 
 async function fetchJson<T>(url: string): Promise<T> {
 const res = await fetch(url);
@@ -106,11 +107,48 @@ limit: number = 20
 pokemon: ProcessedPokemon[];
 pagination: PaginationInfo;
 }> {
-  // 💡 課題: ページングを考慮してポケモンデータを取得し、
-  // ProcessedPokemon形式に変換してください
-const offset = (page -1) * limit; //1ページごとのオフセット
-const list = await fetchPokemonList(limit, offset); //ポケモンリストから取ってくる
 
+// 💡 課題: ページングを考慮してポケモンデータを取得し、
+// ProcessedPokemon形式に変換してください
+//やること６つ
+//１　オフセット計算
+const offset = (page -1) * limit; 
 
+//２　ポケモンリストから取ってくる
+const list = await fetchPokemonList(limit, offset);
 
+//３　詳細情報全部持ってくる
+const details = await Promise.all(
+    list.results.map((p) => fetchPokemon(p.name))
+);
+//４　画像を処理済みデータに変換
+const processed = details.map((pokemon) => ({
+    id: pokemon.id,
+    name: pokemon.name,
+    japaneseName: pokemon.name, //  後で getJapaneseName() を使って正確に変える
+    imageUrl: getPokemonImageUrl(pokemon.sprites),
+    types: pokemon.types.map((t) => t.type.name),
+    height: pokemon.height,
+    weight: pokemon.weight,
+    genus: "", //  後で species 情報を使って埋める
+    abilities: pokemon.abilities.map((a) => ({
+    name: a.ability.name,
+    isHidden: a.is_hidden,
+    })),
+}));
+
+//５　ページ切り替え用情報作成
+const pagination: PaginationInfo = {
+    currentPage: page,
+    totalPages: Math.ceil(list.count / limit),
+    hasNext: list.next !== null,
+    hasPrev: list.previous !== null,
+    totalCount: list.count,
+};
+
+//６　リターン
+return {
+    pokemon: processed,
+    pagination,
+};
 }
