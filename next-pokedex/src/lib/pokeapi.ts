@@ -4,14 +4,12 @@ import type { Pokemon } from "./types";
 import type { Name } from "./types";
 import type{ PaginationInfo } from "./types";
 
-async function fetchJson<T>(url: string): Promise<T> {
-const res = await fetch(url);
-if (!res.ok) {
-    // 開発中はエラーメッセージを残すとデバッグしやすい
-    throw new Error(`Fetch error ${res.status} ${res.statusText} for ${url}`);
-}
-const data = await res.json();
-return data as T;//TypeScript用
+export async function getPokemonList(page = 1, limit = 10) {
+  const offset = (page - 1) * limit;const res = await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+  );
+  const data = await res.json();
+  return data.results; // [{ name, url }, ...]
 }
 
 
@@ -29,7 +27,7 @@ offset: number = 0
   // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
 
 const url = `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`;
-return await fetchJson<PokemonListResponse>(url);
+return await getPokemonList<PokemonListResponse>(url);
 }
 
 /**
@@ -39,7 +37,7 @@ return await fetchJson<PokemonListResponse>(url);
   // エンドポイント: `${BASE_URL}/pokemon/${idOrName}`
 export async function fetchPokemon(idOrName: string | number): Promise<Pokemon> {
 const url = `${BASE_URL}/pokemon/${idOrName}`;
-const data = await fetchJson<Pokemon>(url);
+const data = await getPokemonList<Pokemon>(url);
 return data;
 }
 
@@ -140,7 +138,7 @@ const processed = details.map((pokemon) => ({
 //５　ページ切り替え用情報作成
 const pagination: PaginationInfo = {
     currentPage: page,
-    totalPages: Math.ceil(list.count / limit),
+    totalPages: Math.ceil(list.count / limit    ),
     hasNext: list.next !== null,
     hasPrev: list.previous !== null,
     totalCount: list.count,

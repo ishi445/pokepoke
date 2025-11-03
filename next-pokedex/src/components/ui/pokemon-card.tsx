@@ -21,6 +21,15 @@ return (
             {/* - Imageコンポーネントを使用 */}
             {/* - pokemon.imageUrl を src に設定 */}
             {/* - レスポンシブ対応 */}
+            {/* ポケモン画像 */}
+            <Image
+            src={pokemon.imageUrl}
+            alt={pokemon.name}
+            width={120}
+            height={120}
+            className="mx-auto"
+            />
+            
             
             {/* 💡 課題: ポケモン番号を3桁で表示してください（例: No. 001） */}
             
