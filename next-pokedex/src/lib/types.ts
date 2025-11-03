@@ -26,11 +26,11 @@ export interface PokemonListResponse {
 export  interface Pokemon{
 id:number;//番号
 name:string;//名前
-types:PokemonType;//タイプ
+types:PokemonType[];//タイプ
 sprites:PokemonSprites;//画像情報
 height:number;//高さ
 weight:number;//重さ
-abilities:PokemonAbility;//特性
+abilities:ProcessedAbility[];//特性
 }
 
 // - PokemonType（タイプ情報）
@@ -54,9 +54,10 @@ export interface PokemonSprites {
 }
 
 // - PokemonSpeciesDetail（種別詳細情報）
-export interface PokemonAbility {
-  ability: NamedApiResource; 
-  is_hidden: boolean;
+export interface ProcessedAbility {
+  name: string;
+  ability: NamedApiResource;
+  is_Hidden: boolean;
 }
 
 // アプリ内で使用する処理済みポケモンデータ
@@ -65,11 +66,11 @@ export interface ProcessedPokemon {
   name: string;
   japaneseName: string;
   imageUrl: string;
-  types: PokemonType[];
+  types: string[];
   height: number;
   weight: number;
   genus: string;
-  abilities: PokemonAbility[];
+  abilities: ProcessedAbility[];
 }
 
 // ページネーション情報

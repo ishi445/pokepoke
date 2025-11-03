@@ -2,7 +2,7 @@
 import { PokemonListResponse } from "./types";
 import type { Pokemon } from "./types";
 import type { Name } from "./types";
-import type{ PaginationInfo} from "./types";
+import type{ PaginationInfo } from "./types";
 
 async function fetchJson<T>(url: string): Promise<T> {
 const res = await fetch(url);
@@ -68,7 +68,7 @@ export function getPokemonImageUrl(sprites: Pokemon['sprites']): string {
   // ③ 最後の手段として通常の front_default を使う
     const basic = sprites.front_default;
 
-  // 4️⃣ どれもなければ、代わりの画像を返す（または空文字でもOK）
+  // 4️ どれもなければ、代わりの画像を返す（または空文字でもOK）
   return '/dummy-pokemon.png'; // ←画像パス
 }
 
@@ -104,7 +104,7 @@ export async function getProcessedPokemonList(
 page: number = 1, 
 limit: number = 20
 ): Promise<{
-pokemon: ProcessedPokemon[];
+pokemon: PokemonListResponse[];
 pagination: PaginationInfo;
 }> {
 
@@ -133,7 +133,7 @@ const processed = details.map((pokemon) => ({
     genus: "", //  後で species 情報を使って埋める
     abilities: pokemon.abilities.map((a) => ({
     name: a.ability.name,
-    isHidden: a.is_hidden,
+    isHidden: a.is_Hidden,
     })),
 }));
 
