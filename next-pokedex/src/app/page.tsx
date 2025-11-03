@@ -6,8 +6,9 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-white text-black font-sans">
       <h1 className="text-5xl font-bold mb-20 tracking-tight">
-        ポケモン図鑑へようこそ！
+        ポケモン図鑑へようこそ
       </h1>
+      <p>お気に入りのポケモンを探してみましょう!</p>
 
       <div className="flex flex-row gap-12">
         <Link href="/list">
