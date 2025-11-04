@@ -1,34 +1,33 @@
 // src/lib/pokeapi.ts
-import { PokemonListResponse } from "./types";
-import type { Pokemon } from "./types";
-import type { Name } from "./types";
-import type{ PaginationInfo } from "./types";
+import type { PokemonListResponse, Pokemon, Name, ProcessedPokemon, PaginationInfo } from "./types";
 
-export async function getPokemonList(page = 1, limit = 10) {
-  const offset = (page - 1) * limit;const res = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
-  );
-  const data = await res.json();
-  return data.results; // [{ name, url }, ...]
-}
-
-
-const BASE_URL = 'https://pokeapi.co/api/v2';
+const BASE_URL = "https://pokeapi.co/api/v2";
 const SAFE_POKEMON_LIMIT = 1010;
+
+
+async function fetchJson<T>(url: string): Promise<T> {
+const res = await fetch(url);
+if (!res.ok) throw new Error(`Failed to fetch: ${url}`);
+return res.json();
+}
 
 /**
  * ポケモン一覧を取得する
  */
-export async function fetchPokemonList(
-limit: number = 20, 
-offset: number = 0
-): Promise<PokemonListResponse> {
+export async function getPokemonList(page = 1, limit = 20) {
+  const offset = (page - 1) * limit;
+const res = await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+);
+
+const data = await res.json();
+  return data.results; // [{ name, url }, ...]
+}
   // 💡✅ 課題: fetch()を使ってAPIからデータを取得してください
   // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
 
-const url = `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`;
-return await getPokemonList<PokemonListResponse>(url);
-}
+const res = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
+const data = await res.json();
 
 /**
  * 個別のポケモン詳細情報を取得する
@@ -37,8 +36,7 @@ return await getPokemonList<PokemonListResponse>(url);
   // エンドポイント: `${BASE_URL}/pokemon/${idOrName}`
 export async function fetchPokemon(idOrName: string | number): Promise<Pokemon> {
 const url = `${BASE_URL}/pokemon/${idOrName}`;
-const data = await getPokemonList<Pokemon>(url);
-return data;
+return await fetchJson<Pokemon>(url);
 }
 
 /**
@@ -102,7 +100,17 @@ export async function getProcessedPokemonList(
 page: number = 1, 
 limit: number = 20
 ): Promise<{
-pokemon: PokemonListResponse[];
+pokemon: {
+    id: number;
+    name: string;
+    japaneseName: string;
+    imageUrl: string;
+    types: string[];
+    height: number;
+    weight: number;
+    genus: string;
+    abilities: { name: string; isHidden: boolean }[];
+}[];
 pagination: PaginationInfo;
 }> {
 
@@ -131,7 +139,7 @@ const processed = details.map((pokemon) => ({
     genus: "", //  後で species 情報を使って埋める
     abilities: pokemon.abilities.map((a) => ({
     name: a.ability.name,
-    isHidden: a.is_Hidden,
+    isHidden: a.is_hidden,
     })),
 }));
 
