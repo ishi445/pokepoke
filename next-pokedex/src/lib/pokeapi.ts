@@ -14,20 +14,16 @@ return res.json();
 /**
  * ポケモン一覧を取得する
  */
+  // 💡✅ 課題: fetch()を使ってAPIからデータを取得してください
+  // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
 export async function getPokemonList(page = 1, limit = 20) {
   const offset = (page - 1) * limit;
-const res = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+const res = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`   
 );
 
 const data = await res.json();
   return data.results; // [{ name, url }, ...]
 }
-  // 💡✅ 課題: fetch()を使ってAPIからデータを取得してください
-  // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
-
-const res = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
-const data = await res.json();
 
 /**
  * 個別のポケモン詳細情報を取得する
@@ -121,7 +117,7 @@ pagination: PaginationInfo;
 const offset = (page -1) * limit; 
 
 //２　ポケモンリストから取ってくる
-const list = await fetchPokemonList(limit, offset);
+const list = await getPokemonList(limit, offset);
 
 //３　詳細情報全部持ってくる
 const details = await Promise.all(
