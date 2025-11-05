@@ -17,12 +17,11 @@ return res.json();
   // 💡✅ 課題: fetch()を使ってAPIからデータを取得してください
   // エンドポイント: `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
 export async function getPokemonList(page = 1, limit = 20) {
-  const offset = (page - 1) * limit;
-const res = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`   
-);
-
-const data = await res.json();
-  return data.results; // [{ name, url }, ...]
+    const offset = (page - 1) * limit;
+    const res = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
+    const data = await res.json();
+    console.log(data);
+    return data; // [{ name, url }, ...]
 }
 
 /**
@@ -118,12 +117,13 @@ pagination: PaginationInfo;
 const offset = (page -1) * limit; 
 
 //２　ポケモンリストから取ってくる
-const list = await getPokemonList(limit, offset);
+const list = await getPokemonList(limit, offset) as PokemonListResponse;
 
 //３　詳細情報全部持ってくる
-const details = await Promise.all(
-    list.results.map((p) => fetchPokemon(p.name))
-);
+console.log( list.results)
+const detailsPromises = list.results.map((p) => fetchPokemon(p.name));
+const details = await Promise.all(detailsPromises);
+
 //４　画像を処理済みデータに変換
 const processed = details.map((pokemon) => ({
     id: pokemon.id,
@@ -143,10 +143,9 @@ const processed = details.map((pokemon) => ({
 //５　ページ切り替え用情報作成
 const pagination: PaginationInfo = {
     currentPage: page,
-    totalPages: Math.ceil(list.count / limit    ),
+    totalPages: Math.ceil(list.count / limit),
     hasNext: list.next !== null,
     hasPrev: list.previous !== null,
-    totalCount: list.count,
 };
 
 //６　リターン

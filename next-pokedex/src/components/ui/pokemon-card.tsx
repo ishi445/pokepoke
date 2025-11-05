@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ProcessedPokemon } from '@/lib/types';
 
 interface PokemonCardProps {
 pokemon: ProcessedPokemon;
@@ -33,9 +34,13 @@ return (
             className="mx-auto"
             />
             
-            
             {/* 💡 課題: ポケモン番号を3桁で表示してください（例: No. 001） */}
-            
+            <ul className = "list-none text-black ml-4">
+                <li>{pokemon.id}{"."}</li>
+                <li>{"No"}</li>
+                <li>{pokemon.name}</li>
+                </ul> 
+                
             {/* 💡 課題: ポケモンの日本語名を表示してください */}
             
             {/* 💡 課題: タイプをBadgeで表示してください */}
