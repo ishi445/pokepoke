@@ -1,7 +1,8 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ['raw.githubusercontent.com'], // ← これが大事！画像を持ってくるのに必要
+  },
 };
 
 export default nextConfig;

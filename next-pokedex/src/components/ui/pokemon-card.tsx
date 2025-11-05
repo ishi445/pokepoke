@@ -22,6 +22,9 @@ return (
             {/* - pokemon.imageUrl を src に設定 */}
             {/* - レスポンシブ対応 */}
             {/* ポケモン画像 */}
+            
+
+            {/* //9-04.アプリの実装を読み解くから持ってきた */}
             <Image
             src={pokemon.imageUrl}
             alt={pokemon.name}

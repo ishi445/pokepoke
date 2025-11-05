@@ -61,8 +61,9 @@ export function getPokemonImageUrl(sprites: Pokemon['sprites']): string {
     const basic = sprites.front_default;
 
   // 4️ どれもなければ、代わりの画像を返す（または空文字でもOK）
-  return '/dummy-pokemon.png'; // ←画像パス
-}
+    return official || home || basic || '/dummy-pokemon.png';
+} // ←画像パス
+
 
 // タイプ名の日本語変換テーブル
   // 💡✅ 課題: 他のタイプも追加してください
