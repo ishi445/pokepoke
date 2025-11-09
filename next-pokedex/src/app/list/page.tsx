@@ -5,10 +5,11 @@ import { Loading } from '@/components/ui/loading';
 import { getProcessedPokemonList } from '@/lib/pokeapi';
 // Local fallback PokemonCard component to avoid missing module error
 export function PokemonCard({ pokemon }: { pokemon: any }) {
+  console.log('ブラウザで表示されるポケモン:', pokemon);
   return (
     <article className="bg-white shadow rounded p-4 flex flex-col items-center">
       <img
-        src={pokemon.image ?? (pokemon.sprites?.front_default ?? '/placeholder.png')}
+        src={pokemon.imageUrl ?? (pokemon.sprites?.front_default ?? '/placeholder.png')}
         alt={pokemon.name}
         className="w-24 h-24 object-contain mb-2"
       />
@@ -58,6 +59,7 @@ async function PokemonListContent({ page }: { page: number }) {
   // 💡 課題: PokemonCardコンポーネントでグリッド表示
   // 💡 課題: PaginationComponentでページング
   const pokemonData = await getProcessedPokemonList(page, 20);
+  console.log('サーバーで取得したデータ:', pokemonData);
   const pokemonList = pokemonData.pokemon;
   const paginationInfo = pokemonData.pagination;
 

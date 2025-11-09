@@ -37,6 +37,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
     console.log("ポケモンID:", pokemon.id);
     // 画像が出ないときはここで URL を確認
     console.log("画像URL:", pokemon.imageUrl);
+    console.log("pokemonオブジェクト:", pokemon);
 // id が undefined/null の場合は 0 を使って "No.000" 表示にする
 const formattedId = String(pokemon.id ?? 0).padStart(3, "0");
 
