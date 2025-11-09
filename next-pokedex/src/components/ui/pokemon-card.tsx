@@ -12,7 +12,29 @@ interface PokemonCardProps {
 pokemon: ProcessedPokemon;
 }
 
+const typeTranslations: Record<string, string> = {
+Normal: "ノーマル",
+Fire: "ほのお",
+Water: "みず",
+Electric: "でんき",
+Grass: "くさ",
+Ice: "こおり",
+Fighting: "かくとう",
+Poison: "どく",
+Ground: "じめん",
+Flying: "ひこう",
+Psychic: "エスパー",
+Bug: "むし",
+Rock: "いわ",
+Ghost: "ゴースト",
+Dark: "あく",
+Dragon: "ドラゴン",
+Steel: "はがね",
+Fairy: "フェアリー",
+};
+
 export function PokemonCard({ pokemon }: PokemonCardProps) {
+const formattedId = String(pokemon.id).padStart(3, "0");
 return (
     <Link href={`/pokemon/${pokemon.id}`}>
     <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
@@ -23,8 +45,6 @@ return (
             {/* - pokemon.imageUrl を src に設定 */}
             {/* - レスポンシブ対応 */}
             {/* ポケモン画像 */}
-            
-
             {/* //9-04.アプリの実装を読み解くから持ってきた */}
             <Image
             src={pokemon.imageUrl}
@@ -36,18 +56,28 @@ return (
             
             {/* 💡 課題: ポケモン番号を3桁で表示してください（例: No. 001） */}
             <ul className = "list-none text-black ml-4">
-                <li>{pokemon.id}{"."}</li>
-                <li>{"No"}</li>
+                <li>No. {formattedId}</li>
                 <li>{pokemon.name}</li>
-                </ul> 
+            </ul> 
                 
             {/* 💡 課題: ポケモンの日本語名を表示してください */}
+            <h2 className= "text-xl font-bold mt-2">{pokemon.japaneseName||pokemon.name}</h2>
             
             {/* 💡 課題: タイプをBadgeで表示してください */}
             {/* - pokemon.types をmap()で処理 */}
             {/* - typeTranslations で日本語変換 */}
+            <div className="flex justify-center gap-2 mt-2">
+            {pokemon.types.map((type) => (
+                <Badge key={type} variant="outline">
+                {typeTranslations[type] || type}
+                </Badge>
+            ))}
+            </div>
         </div>
-        </CardContent>
+            
+    
+    
+    </CardContent>
     </Card>
     </Link>
 );
