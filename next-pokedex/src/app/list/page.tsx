@@ -13,8 +13,8 @@ export function PokemonCard({ pokemon }: { pokemon: any }) {
         alt={pokemon.name}
         className="w-24 h-24 object-contain mb-2"
       />
-      <h3 className="text-lg font-semibold">{pokemon.name}</h3>
-      <p className="text-sm text-gray-500">#{pokemon.id}</p>
+      <h3 className="text-lg font-semibold">{pokemon.japaneseName }</h3>
+      <p className="text-sm text-gray-500">#{pokemon.id.toString().padStart(3, '0')}</p>
     </article>
   );
 }
