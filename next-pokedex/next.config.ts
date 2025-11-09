@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['raw.githubusercontent.com'], // ← これが大事！画像を持ってくるのに必要
+    domains: ['raw.githubusercontent.com'], // ← 画像を持ってくるのに必要
   },
 };
 

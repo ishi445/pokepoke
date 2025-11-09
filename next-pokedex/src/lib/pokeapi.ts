@@ -60,8 +60,8 @@ export function getPokemonImageUrl(sprites: Pokemon['sprites']): string {
     const basic = sprites.front_default;
 
   // 4️ どれもなければ、代わりの画像を返す（または空文字でもOK）
-    return official || home || basic || '/dummy-pokemon.png';
-} // ←画像パス
+    return official || home || basic || '/dummy-pokemon.png';// ←画像パス
+} 
 
 
 // タイプ名の日本語変換テーブル
@@ -117,7 +117,7 @@ pagination: PaginationInfo;
 const offset = (page -1) * limit; 
 
 //２　ポケモンリストから取ってくる
-const list = await getPokemonList(limit, offset) as PokemonListResponse;
+const list = await getPokemonList(page, limit) as PokemonListResponse;
 
 //３　詳細情報全部持ってくる
 console.log( list.results)
@@ -125,21 +125,36 @@ const detailsPromises = list.results.map((p) => fetchPokemon(p.name));
 const details = await Promise.all(detailsPromises);
 
 //４　画像を処理済みデータに変換
-const processed = details.map((pokemon) => ({
-    id: pokemon.id,
-    name: pokemon.name,
-    japaneseName: pokemon.name, //  後で getJapaneseName() を使って正確に変える
-    imageUrl: getPokemonImageUrl(pokemon.sprites),
-    types: pokemon.types.map((t) => t.type.name),
-    height: pokemon.height,
-    weight: pokemon.weight,
-    genus: "", //  後で species 情報を使って埋める
-    abilities: pokemon.abilities.map((a) => ({
-    name: a.ability.name,
-    isHidden: a.is_hidden,
-    })),
-}));
+const processed = await Promise.all(
+    details.map(async (pokemon) => {
+      const speciesRes = await fetch(pokemon.species.url);
+      const speciesData = await speciesRes.json();
 
+      const japaneseName =
+        speciesData.names.find((n: any) => n.language.name === "ja-Hrkt")
+          ?.name || pokemon.name;
+
+      const genus =
+        speciesData.genera.find((g: any) => g.language.name === "ja-Hrkt")
+          ?.genus || "";
+
+      return {
+        id: pokemon.id,
+        name: pokemon.name,
+        japaneseName,
+        imageUrl: getPokemonImageUrl(pokemon.sprites),
+        types: pokemon.types.map((t) => t.type.name),
+        height: pokemon.height,
+        weight: pokemon.weight,
+        genus,
+        abilities: pokemon.abilities.map((a) => ({
+          name: a.ability.name,
+          isHidden: a.is_hidden,
+        })),
+      };
+    })
+  );
+  
 //５　ページ切り替え用情報作成
 const pagination: PaginationInfo = {
     currentPage: page,

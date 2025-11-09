@@ -34,7 +34,9 @@ Fairy: "フェアリー",
 };
 
 export function PokemonCard({ pokemon }: PokemonCardProps) {
+    console.log("ポケモンID:", pokemon.id);
 const formattedId = String(pokemon.id).padStart(3, "0");
+
 return (
     <Link href={`/pokemon/${pokemon.id}`}>
     <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
@@ -55,13 +57,10 @@ return (
             />
             
             {/* 💡 課題: ポケモン番号を3桁で表示してください（例: No. 001） */}
-            <ul className = "list-none text-black ml-4">
-                <li>No. {formattedId}</li>
-                <li>{pokemon.name}</li>
-            </ul> 
+            <p className="text-gray-700 mt-2">No.{formattedId}</p>
                 
             {/* 💡 課題: ポケモンの日本語名を表示してください */}
-            <h2 className= "text-xl font-bold mt-2">{pokemon.japaneseName||pokemon.name}</h2>
+            <p className="font-bold text-lg">{pokemon.japaneseName || pokemon.name}</p>
             
             {/* 💡 課題: タイプをBadgeで表示してください */}
             {/* - pokemon.types をmap()で処理 */}
