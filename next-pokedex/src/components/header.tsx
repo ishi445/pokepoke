@@ -18,9 +18,25 @@ return (
     <header className="bg-white shadow-sm border-b">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+            {/* 左側：タイトル */}
         <Link href="/" className="text-xl font-bold text-blue-600">
             ポケモン図鑑
         </Link>
+
+             {/* 右側：ナビゲーションメニュー */}
+        <nav className="hidden md:flex space-x-6">
+            {navigationItems.map((item) => (
+            <Link
+                key={item.href}
+                href={item.href}
+                className={`text-gray-700 hover:text-blue-600 ${
+                pathname === item.href ? "font-bold text-blue-600 border-b-2 border-blue-600" : ""
+                }`}
+            >
+                {item.label}
+            </Link>
+            ))}
+        </nav>
 
           {/* 💡 課題: ナビゲーションメニューを実装してください */}
           {/* - デスクトップ用とモバイル用の両方 */}

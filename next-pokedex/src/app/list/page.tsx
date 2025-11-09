@@ -32,6 +32,7 @@ async function PokemonListContent({ page }: { page: number }) {
       <p>Pagination Info: {JSON.stringify(paginationInfo)}</p>
       {
         /* ここにPokemonCardコンポーネントを使ったグリッド表示を実装してください */
+        
       }
     </div>
   );
