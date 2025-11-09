@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  
   images: {
-    domains: ['raw.githubusercontent.com'], // ← 画像を持ってくるのに必要
+    remotePatterns: [
+      {
+        protocol: 'https',
+        // PokeAPIの画像がホストされているドメインを指定
+        hostname: 'raw.githubusercontent.com', 
+      },
+    ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
