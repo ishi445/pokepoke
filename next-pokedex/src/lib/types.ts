@@ -262,8 +262,9 @@ export interface ProcessedPokemon {
 
 export interface ProcessedAbility {
   name: string;
-  japaneseName: string;
-  description: string;
+  // 日本語名や説明はまだ取得していないケースがあるため任意にする
+  japaneseName?: string;
+  description?: string;
   isHidden: boolean;
 }
 
