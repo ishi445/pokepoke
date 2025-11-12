@@ -3,7 +3,22 @@
 import { Suspense } from 'react';
 import { Loading } from '@/components/ui/loading';
 import { getProcessedPokemonList } from '@/lib/pokeapi';
-import { PokemonCard } from '@/components/ui/pokemon-card';
+// Local fallback PokemonCard component to avoid missing module error
+export function PokemonCard({ pokemon }: { pokemon: any }) {
+  console.log('ブラウザで表示されるポケモン:', pokemon);
+  return (
+    <article className="bg-white shadow rounded p-4 flex flex-col items-center">
+      <img
+        src={pokemon.imageUrl ?? (pokemon.sprites?.front_default ?? '/placeholder.png')}
+        alt={pokemon.name}
+        className="w-24 h-24 object-contain mb-2"
+      />
+      <p className="text-sm text-gray-500">#{pokemon.id.toString().padStart(3, '0')}</p>
+      <h3 className="text-lg font-semibold">{pokemon.japaneseName }</h3>
+      
+    </article>
+  );
+}
 
 // Minimal PaginationComponent added locally to avoid missing module error
 type Pagination = {
