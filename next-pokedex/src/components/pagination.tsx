@@ -1,67 +1,70 @@
 // src/components/pagination.tsx
 "use client";
 
+
+
 import { useRouter } from "next/navigation";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
+Pagination,
+PaginationContent,
+PaginationItem,
+PaginationLink,
+PaginationNext,
+PaginationPrevious,
 } from "@/components/ui/pagination";
 
 interface PaginationInfo {
-  currentPage: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
+currentPage: number;
+totalPages: number;
+hasNext: boolean;
+hasPrev: boolean;
 }
 
 interface PaginationComponentProps {
-  pagination: PaginationInfo;
-  basePath: string;
+pagination: PaginationInfo;
+basePath: string;
 }
 
 export function PaginationComponent({ pagination, basePath }: PaginationComponentProps) {
-  const { currentPage, totalPages, hasNext, hasPrev } = pagination;
-  const router = useRouter();
+    console.log("PaginationComponent mounted!!!");
+const { currentPage, totalPages, hasNext, hasPrev } = pagination;
+const router = useRouter();
 
-  const start = Math.max(1, currentPage - 2);
-  const end = Math.min(totalPages, start + 4);
+const start = Math.max(1, currentPage - 2);
+const end = Math.min(totalPages, start + 4);
 
-  return (
+return (
     <Pagination>
-      <PaginationContent>
+    <PaginationContent>
         {hasPrev && (
-          <PaginationItem>
+        <PaginationItem>
             <PaginationPrevious href={`${basePath}?page=${currentPage - 1}`} onClick={(e) => { e.preventDefault(); router.push(`${basePath}?page=${currentPage - 1}`); }} />
-          </PaginationItem>
+        </PaginationItem>
         )}
 
         {Array.from({ length: end - start + 1 }, (_, i) => {
-          const page = start + i;
-          return (
+        const page = start + i;
+        return (
             <PaginationItem key={page}>
-              <PaginationLink
+            <PaginationLink
                 href={`${basePath}?page=${page}`}
                 isActive={page === currentPage}
                 onClick={(e) => { e.preventDefault(); router.push(`${basePath}?page=${page}`); }}
-              >
+            >
                 {page}
-              </PaginationLink>
+            </PaginationLink>
             </PaginationItem>
-          );
+        );
         })}
 
         {hasNext && (
-          <PaginationItem>
+        <PaginationItem>
             <PaginationNext href={`${basePath}?page=${currentPage + 1}`} onClick={(e) => { e.preventDefault(); router.push(`${basePath}?page=${currentPage + 1}`); }} />
-          </PaginationItem>
+        </PaginationItem>
         )}
-      </PaginationContent>
+    </PaginationContent>
     </Pagination>
-  );
+);
 }
 
 export default PaginationComponent;
