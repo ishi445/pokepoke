@@ -54,10 +54,6 @@ async function PokemonListContent({ page }: { page: number }) {
 
   return (
     <>
-      <p className="text-center mb-4 text-gray-500">
-        {`Fetched ${pokemonList.length} Pokémon for page ${page}.`}
-      </p>
-
       {/* ✅ ポケモンカードをグリッドで表示 */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {pokemonList.map((pokemon) => (
