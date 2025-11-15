@@ -1,7 +1,4 @@
-// src/components/pagination.tsx
 "use client";
-
-
 
 import { useRouter } from "next/navigation";
 import {
@@ -25,31 +22,49 @@ pagination: PaginationInfo;
 basePath: string;
 }
 
-export function PaginationComponent({ pagination, basePath }: PaginationComponentProps) {
-    console.log("PaginationComponent mounted!!!");
+export default function PaginationComponent({
+pagination,
+basePath,
+}: PaginationComponentProps) {
 const { currentPage, totalPages, hasNext, hasPrev } = pagination;
 const router = useRouter();
 
+  // ページ番号 5個だけ表示
 const start = Math.max(1, currentPage - 2);
 const end = Math.min(totalPages, start + 4);
+
+const goTo = (page: number) => {
+    router.push(`${basePath}?page=${page}`);
+};
 
 return (
     <Pagination>
     <PaginationContent>
+        {/* ◀ 前へ */}
         {hasPrev && (
         <PaginationItem>
-            <PaginationPrevious href={`${basePath}?page=${currentPage - 1}`} onClick={(e) => { e.preventDefault(); router.push(`${basePath}?page=${currentPage - 1}`); }} />
+            <PaginationPrevious
+            href="#"
+            onClick={(e) => {
+                e.preventDefault();
+                goTo(currentPage - 1);
+            }}
+            />
         </PaginationItem>
         )}
 
+        {/* ページ番号 */}
         {Array.from({ length: end - start + 1 }, (_, i) => {
         const page = start + i;
         return (
             <PaginationItem key={page}>
             <PaginationLink
-                href={`${basePath}?page=${page}`}
+                href="#"
                 isActive={page === currentPage}
-                onClick={(e) => { e.preventDefault(); router.push(`${basePath}?page=${page}`); }}
+                onClick={(e) => {
+                e.preventDefault();
+                goTo(page);
+                }}
             >
                 {page}
             </PaginationLink>
@@ -57,14 +72,19 @@ return (
         );
         })}
 
+        {/* ▶ 次へ */}
         {hasNext && (
         <PaginationItem>
-            <PaginationNext href={`${basePath}?page=${currentPage + 1}`} onClick={(e) => { e.preventDefault(); router.push(`${basePath}?page=${currentPage + 1}`); }} />
+            <PaginationNext
+            href="#"
+            onClick={(e) => {
+                e.preventDefault();
+                goTo(currentPage + 1);
+            }}
+            />
         </PaginationItem>
         )}
     </PaginationContent>
     </Pagination>
 );
 }
-
-export default PaginationComponent;

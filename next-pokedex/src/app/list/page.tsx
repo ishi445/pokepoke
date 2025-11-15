@@ -3,6 +3,8 @@
 import { Suspense } from 'react';
 import { Loading } from '@/components/ui/loading';
 import { getProcessedPokemonList } from '@/lib/pokeapi';
+import PaginationComponent from "@/components/pagination";
+
 // Local fallback PokemonCard component to avoid missing module error
 export function PokemonCard({ pokemon }: { pokemon: any }) {
   console.log('ブラウザで表示されるポケモン:', pokemon);
@@ -21,30 +23,8 @@ export function PokemonCard({ pokemon }: { pokemon: any }) {
 }
 
 // Minimal PaginationComponent added locally to avoid missing module error
-type Pagination = {
-  total: number;
-  perPage: number;
-  totalPages: number;
-};
 
-export function PaginationComponent({ currentPage, pagination }: { currentPage: number; pagination: Pagination }) {
-  const { totalPages } = pagination;
-  const pages = Array.from({ length: Math.max(1, totalPages) }, (_, i) => i + 1);
 
-  return (
-    <nav aria-label="Pagination" className="flex space-x-2">
-      {pages.map((p) => (
-        <a
-          key={p}
-          href={`?page=${p}`}
-          className={`px-3 py-1 rounded ${p === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-        >
-          {p}
-        </a>
-      ))}
-    </nav>
-  );
-}
 
 interface SearchParams {
   page?: string;
@@ -65,10 +45,11 @@ async function PokemonListContent({ page }: { page: number }) {
   const paginationInfo = pokemonData.pagination;
 
   // Normalize paginationInfo to the local Pagination type expected by PaginationComponent
-  const pagination: Pagination = {
-    total: (paginationInfo as any).total ?? (paginationInfo.totalPages ? paginationInfo.totalPages * 20 : pokemonList.length),
-    perPage: (paginationInfo as any).perPage ?? 20,
-    totalPages: paginationInfo.totalPages ?? Math.max(1, Math.ceil(((paginationInfo as any).total ?? pokemonList.length) / ((paginationInfo as any).perPage ?? 20))),
+    const pagination = {
+    currentPage: page,
+    totalPages: paginationInfo.totalPages,
+    hasNext: page < paginationInfo.totalPages,
+    hasPrev: page > 1,
   };
 
   return (
@@ -86,7 +67,7 @@ async function PokemonListContent({ page }: { page: number }) {
 
       {/* ✅ ページネーション */}
       <div className="mt-8 flex justify-center">
-        <PaginationComponent currentPage={page} pagination={pagination} />
+        <PaginationComponent pagination={pagination} basePath="/list" />
       </div>
     </>
   );
