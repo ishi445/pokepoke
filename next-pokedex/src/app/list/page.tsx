@@ -1,9 +1,9 @@
 // src/app/pokemon/page.tsx
 
 import { Suspense } from 'react';
-import { Loading } from '@/components/ui/loading';
 import { getProcessedPokemonList } from '@/lib/pokeapi';
 import PaginationComponent from "@/components/pagination";
+import { Loading } from "@/components/loading";
 
 // Local fallback PokemonCard component to avoid missing module error
 export function PokemonCard({ pokemon }: { pokemon: any }) {
