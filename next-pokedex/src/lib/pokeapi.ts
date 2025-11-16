@@ -1,20 +1,6 @@
 // src/lib/pokeapi.ts
 import type { PokemonListResponse, Pokemon, Name, ProcessedPokemon, PaginationInfo } from "./types";
 
-interface PokemonName {
-  language: {
-    name: string;
-  };
-  name: string;
-}
-
-interface PokemonGenus {
-  language: {
-    name: string;
-  };
-  genus: string;
-}
-
 const BASE_URL = "https://pokeapi.co/api/v2";
 const SAFE_POKEMON_LIMIT = 1010;
 
@@ -146,12 +132,12 @@ const processed = await Promise.all(
 
       const japaneseName =
   speciesData.names.find(
-    (n: PokemonName) => n.language.name === "ja-Hrkt"
+    (n: Name) => n.language.name === "ja-Hrkt"
   )?.name || pokemon.name;
 
 const genus =
   speciesData.genera.find(
-    (g: PokemonGenus) => g.language.name === "ja-Hrkt"
+    (g: Name) => g.language.name === "ja-Hrkt"
   )?.genus || "";
 
       return {
