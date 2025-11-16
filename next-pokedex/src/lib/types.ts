@@ -12,6 +12,16 @@ export interface PokemonListItem {
   url: string;
 }
 
+export interface PokemonData {
+  id: number;
+  name: string;
+  japaneseName: string;
+  imageUrl?: string;
+  sprites?: {
+    front_default?: string;
+  };
+}
+
 export interface Pokemon {
   id: number;
   name: string;

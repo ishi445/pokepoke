@@ -4,9 +4,10 @@ import { Suspense } from 'react';
 import { getProcessedPokemonList } from '@/lib/pokeapi';
 import PaginationComponent from "@/components/pagination";
 import { Loading } from "@/components/loading";
+import { PokemonData } from "@/lib/types";
 
-// Local fallback PokemonCard component to avoid missing module error
-export function PokemonCard({ pokemon }: { pokemon: any }) {
+
+export function PokemonCard({ pokemon }: { pokemon: PokemonData }) {
   console.log('ブラウザで表示されるポケモン:', pokemon);
   return (
     <article className="bg-white shadow rounded p-4 flex flex-col items-center">
@@ -16,7 +17,7 @@ export function PokemonCard({ pokemon }: { pokemon: any }) {
         className="w-24 h-24 object-contain mb-2"
       />
       <p className="text-sm text-gray-500">#{pokemon.id.toString().padStart(3, '0')}</p>
-      <h3 className="text-lg font-semibold">{pokemon.japaneseName }</h3>
+      <h3 className="text-lg font-semibold">{pokemon.japaneseName}</h3>
       
     </article>
   );
