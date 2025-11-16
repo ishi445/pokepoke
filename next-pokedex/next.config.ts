@@ -8,7 +8,7 @@ const nextConfig = {
         // PokeAPIの画像がホストされているドメインを指定
         hostname: 'raw.githubusercontent.com',
         // パス全体を許可
-        pathname: '/**',
+        pathname: '/PokeAPI/sprites/**',
       },
       // 追加で許可しておきたいドメイン（必要なら有効化）
       // {
