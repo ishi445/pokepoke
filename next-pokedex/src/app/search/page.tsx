@@ -1,6 +1,7 @@
 // src/app/search/page.tsx
 
 import { Suspense } from 'react';
+import { Loading } from "@/components/loading";
 
 interface SearchParams {
   q?: string;
