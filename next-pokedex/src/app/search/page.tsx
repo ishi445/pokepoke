@@ -21,10 +21,12 @@ export default async function SearchPage({ searchParams }: Props) {
       <h1 className="text-3xl font-bold text-center mb-8">ポケモン検索</h1>
       
       {/* 💡 課題: SearchFormコンポーネントを配置 */}
+      <SearchForm />
       
       {query && (
         <Suspense fallback={<Loading />}>
           {/* 💡 課題: 検索結果を表示するコンポーネント */}
+          <SearchResult query={query} />
         </Suspense>
       )}
     </div>
