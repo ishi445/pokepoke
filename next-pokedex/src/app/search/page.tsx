@@ -2,6 +2,9 @@
 
 import { Suspense } from 'react';
 import { Loading } from "@/components/loading";
+import { SearchForm } from "@/components/SearchForm";
+
+<SearchForm initialQuery={query} />
 
 interface SearchParams {
   q?: string;
